@@ -22,3 +22,4 @@ RUN set -ex \
 COPY --from=builder /go/bin/hysteria /usr/local/bin/hysteria
 
 ENTRYPOINT ["hysteria"]
+CMD ["server", "--listen", ":443", "--auth", "password:YourStrongPassword123", "--tls-self-signed"]
