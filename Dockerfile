@@ -3,13 +3,13 @@ FROM golang:1-alpine AS builder
 ARG GOPROXY=""
 ENV GOPROXY=${GOPROXY}
 
-COPY . /go/src/github.com/apernet/hysteria
 WORKDIR /go/src/github.com/apernet/hysteria
+COPY . .
 
 RUN set -ex \
-    && apk add --no-cache git build-base bash python3 \
-    && python3 hyperbole.py build -r \
-    && mv ./build/hysteria-* /go/bin/hysteria
+    && apk add --no-cache git build-base bash ca-certificates \
+    && cd app \
+    && go build -trimpath -ldflags="-s -w" -o /go/bin/hysteria .
 
 FROM alpine AS dist
 
